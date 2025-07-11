@@ -34,3 +34,9 @@ audio{
     width:100%;
     margin-top: 10px;
 }
+
+#login-section{
+    display: flex;
+    justify-content: center; /* horizontal */
+    align-items: center; 
+}
