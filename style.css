@@ -11,7 +11,7 @@ body {
   max-width: 600px;
   margin: auto;
   padding: 20px;
-  background: #222;
+  background: #f1eaea;
   border-radius: 10px;
 }
 
@@ -33,6 +33,14 @@ button:hover {
 audio {
   width: 100%;
   margin-top: 10px;
+}
+
+#upload-section{
+    display: none;
+}
+
+#song-list{
+    display: none;
 }
 
 
