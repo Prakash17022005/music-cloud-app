@@ -8,6 +8,7 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://apis.google.com https://accounts.google.com https://www.gstatic.com; object-src 'none';">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 
 </head>
@@ -19,27 +20,30 @@
         <!-- Google Login -->
         <div id="login-section">
         
-            <div id="g_id_onload"  
-                data-client_id="365525528200-srh7vjvn3mu9o3l3crhei3euvnmodauj.apps.googleusercontent.com"               
+            <div id="g_id_onload"
+                data-client_id="365525528200-srh7vjvn3mu9o3l3crhei3euvnmodauj.apps.googleusercontent.com"
+                data-context="signin"
                 data-callback="handleGoogleLogin"
                 data-auto_prompt="false">
             </div>
 
             <div class="g_id_signin"
                 data-type="standard"
-                data-size="large"
+                data-shape="pill"
                 data-theme="outline"
                 data-text="sign_in_with"
-                data-shape="pill">
-
+                data-size="large"
+                data-logo_alignment="left">
             </div>
+
         </div>
 
         <!-- Upload Section -->
         <div id="upload-section" style="display:none;">
             <h3>Upload your MP3</h3>
-            <input type="file" id="mp3-file" accept=".mp3"/>
-            <button id="upload-btn">Upload</button>
+            <input type="file" id="file-input" accept=".mp3"/> 
+            <br />
+            <button id="upload-btn" onclick="uploadFile()">Upload</button>
         </div>
 
         <!-- Song List -->
