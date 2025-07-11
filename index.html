@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY_musclo</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 My Music Cloud</h1>
+
+        <!--Login Section-->
+        <!-- Google Login -->
+        <div id="login-section">
+        
+            <div id="g_id_onload"  
+                data-client_id="365525528200-srh7vjvn3mu9o3l3crhei3euvnmodauj.apps.googleusercontent.com"               
+                data-callback="handleGoogleLogin"
+                data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="outline"
+                data-text="sign_in_with"
+                data-shape="pill">
+
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div id="upload-section" style="display:none;">
+            <h3>Upload your MP3</h3>
+            <input type="file" id="mp3-file" accept=".mp3"/>
+            <button id="upload-btn">Upload</button>
+        </div>
+
+        <!-- Song List -->
+        <div id="song-list" style="display:none;">
+            <h3>Your Uploaded Songs</h3>
+            <ul id="songs-ul"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Google API Client -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</body>
+</html>
