@@ -8,19 +8,15 @@ function handleGoogleLogin(response) {
 
   console.log("User logged in:", userName, userEmail);
 
-  // Safely show welcome message
+  // Show welcome message
   const loginSection = document.getElementById("login-section");
-  loginSection.innerHTML = "";
+  loginSection.innerHTML = `<p>Welcome, ${userName}!</p>`;
 
-  const welcomeMsg = document.createElement("p");
-  welcomeMsg.textContent = `Welcome, ${userName}!`;
-  loginSection.appendChild(welcomeMsg);
-
-  // Show upload UI
+  // Show upload and list UI
   document.getElementById("upload-section").style.display = "block";
   document.getElementById("song-list").style.display = "block";
 
-  // Ask for Drive access
+  // Load Drive Auth
   gapi.load("client:auth2", () => {
     gapi.auth2.init({
       client_id: "365525528200-srh7vjvn3mu9o3l3crhei3euvnmodauj.apps.googleusercontent.com",
@@ -30,6 +26,9 @@ function handleGoogleLogin(response) {
       authInstance.signIn().then(googleUser => {
         accessToken = googleUser.getAuthResponse().access_token;
         console.log("🚀 Got Drive Access Token:", accessToken);
+        listFiles(); // ✅ Only call this after we get accessToken
+      }).catch(error => {
+        console.error("❌ Google Sign-In failed:", error);
       });
     });
   });
@@ -63,6 +62,7 @@ function uploadFile() {
     .then(data => {
       console.log("✅ File uploaded:", data);
       alert(`File "${file.name}" uploaded successfully to your Drive!`);
+      listFiles(); // ✅ Refresh file list
     })
     .catch(err => {
       console.error("❌ Upload error:", err);
@@ -70,7 +70,43 @@ function uploadFile() {
     });
 }
 
-// Attach event listener safely after DOM loads
+// List uploaded audio files
+function listFiles() {
+  fetch("https://www.googleapis.com/drive/v3/files?q=mimeType='audio/mpeg'&fields=files(id,name,webViewLink)", {
+    method: "GET",
+    headers: new Headers({ Authorization: "Bearer " + accessToken })
+  })
+    .then(res => res.json())
+    .then(data => {
+      const songList = document.getElementById("song-list");
+      songList.innerHTML = "";
+
+      if (data.files.length === 0) {
+        songList.innerHTML = "<p>No songs found in your Drive.</p>";
+        return;
+      }
+
+      data.files.forEach(file => {
+        const fileURL = `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`;
+
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.src = fileURL;
+
+        const label = document.createElement("p");
+        label.textContent = `🎵 ${file.name}`;
+
+        songList.appendChild(label);
+        songList.appendChild(audio);
+      });
+    })
+    .catch(err => {
+      console.error("❌ Error listing files:", err);
+      alert("Failed to list files. Check console.");
+    });
+}
+
+// Set event listener when DOM loads
 document.addEventListener("DOMContentLoaded", () => {
   const uploadBtn = document.getElementById("upload-btn");
   if (uploadBtn) {
