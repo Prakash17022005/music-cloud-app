@@ -1,4 +1,4 @@
-let accessToken = ""; // Google Drive access token
+let accessToken = "";
 
 function handleGoogleLogin(response) {
   const jwt = response.credential;
@@ -8,15 +8,12 @@ function handleGoogleLogin(response) {
 
   console.log("User logged in:", userName, userEmail);
 
-  // Show welcome message
   const loginSection = document.getElementById("login-section");
   loginSection.innerHTML = `<p>Welcome, ${userName}!</p>`;
 
-  // Show upload and list UI
   document.getElementById("upload-section").style.display = "block";
   document.getElementById("song-list").style.display = "block";
 
-  // Load Drive Auth
   gapi.load("client:auth2", () => {
     gapi.auth2.init({
       client_id: "365525528200-srh7vjvn3mu9o3l3crhei3euvnmodauj.apps.googleusercontent.com",
@@ -26,7 +23,7 @@ function handleGoogleLogin(response) {
       authInstance.signIn().then(googleUser => {
         accessToken = googleUser.getAuthResponse().access_token;
         console.log("🚀 Got Drive Access Token:", accessToken);
-        listFiles(); // ✅ Only call this after we get accessToken
+        listFiles();
       }).catch(error => {
         console.error("❌ Google Sign-In failed:", error);
       });
@@ -34,7 +31,6 @@ function handleGoogleLogin(response) {
   });
 }
 
-// Upload file to Drive
 function uploadFile() {
   const fileInput = document.getElementById("file-input");
   const file = fileInput.files[0];
@@ -62,7 +58,7 @@ function uploadFile() {
     .then(data => {
       console.log("✅ File uploaded:", data);
       alert(`File "${file.name}" uploaded successfully to your Drive!`);
-      listFiles(); // ✅ Refresh file list
+      listFiles();
     })
     .catch(err => {
       console.error("❌ Upload error:", err);
@@ -70,9 +66,8 @@ function uploadFile() {
     });
 }
 
-// List uploaded audio files
 function listFiles() {
-  fetch("https://www.googleapis.com/drive/v3/files?q=mimeType='audio/mpeg'&fields=files(id,name,webViewLink)", {
+  fetch("https://www.googleapis.com/drive/v3/files?q=mimeType='audio/mpeg'&fields=files(id,name)", {
     method: "GET",
     headers: new Headers({ Authorization: "Bearer " + accessToken })
   })
@@ -106,7 +101,6 @@ function listFiles() {
     });
 }
 
-// Set event listener when DOM loads
 document.addEventListener("DOMContentLoaded", () => {
   const uploadBtn = document.getElementById("upload-btn");
   if (uploadBtn) {

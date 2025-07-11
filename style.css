@@ -35,17 +35,13 @@ audio {
   margin-top: 10px;
 }
 
-#upload-section{
-    display: none;
+#login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#song-list{
-    display: none;
-}
-
-
-#login-section{
-    display: flex;
-    justify-content: center; /* horizontal */
-    align-items: center; 
+#upload-section,
+#song-list {
+  display: none;
 }
